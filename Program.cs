@@ -1,35 +1,29 @@
 ﻿using CS_DB_Sample.Infrastructures;
+using CS_DB_Sample.Infrastructures.Queries;
 
 namespace CS_DB_Sample;
-
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("===== MySQL 接続テスト開始 =====");
-
-        try
+         var accessor = new ItemAccessor(new AppDbContext());
+        var items = accessor.FindByNameContains("ペン");
+        Console.WriteLine("商品名に指定語句を「含む」商品を検索（中間一致）");
+        foreach (var item in items)
         {
-            // DbContextを生成
-            using var db = new AppDbContext();
-
-            // 実際に MySQL に接続できるか確認する（SELECT 1 相当）
-            var canConnect = db.Database.CanConnect();
-
-            if (canConnect)
-            {
-                Console.WriteLine("✅ MySQL (cs_db_exercise) に接続できました。");
-            }
-            else
-            {
-                Console.WriteLine("⚠ MySQL に接続できませんでした。");
-            }
+            Console.WriteLine(item);
         }
-        catch (Exception ex)
+        items = accessor.FindByNameStartsWith("水性");
+        Console.WriteLine("商品名が指定語句で「始まる」商品を検索（前方一致）");
+        foreach (var item in items)
         {
-            Console.WriteLine("❌ 例外が発生しました。");
-            Console.WriteLine(ex.Message);
+            Console.WriteLine(item);
         }
-        Console.WriteLine("===== MySQL 接続テスト終了 =====");
+        items = accessor.FindByNameEndsWith("キーボード");
+        Console.WriteLine("商品名が指定語句で「終わる」商品を検索（後方一致）");
+        foreach (var item in items)
+        {
+            Console.WriteLine(item);
+        }
     }
 }
