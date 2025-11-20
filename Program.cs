@@ -7,23 +7,22 @@ class Program
     static void Main(string[] args)
     {
         var accessor = new ItemAccessor(new AppDbContext());
-        var item = new Item { Name = "消しゴム", Price = 120, CategoryId = 1 };
-
-
-        // 商品を登録する
-        item = accessor.Create(item);
-        Console.WriteLine($"登録された商品 {item}");
-        // 登録する商品リスト
+        var item = new Item { Id = 29};
+        // 商品:消しゴムの単価を変更する
+        item = accessor.DeleteById(item);
+        Console.WriteLine($"削除された商品 {item}");
+        
+        // 削除する商品リスト
         var items = new List<Item>
         {
-            new Item { Name = "砂消しゴム", Price = 120, CategoryId = 1 },
-            new Item { Name = "定規", Price = 150, CategoryId = 1 }
+            new Item { Id = 30 },
+            new Item { Id = 31 }
         };
-        // 商品を一括登録する
-        accessor.CreateRange(items);
+        // 商品を一括変更する
+        accessor.DeleteRange(items);
         foreach (var i in items)
         {
-            Console.WriteLine($"登録された商品 {i}");
+            Console.WriteLine($"削除された商品 {i}");
         }
     }
 }
