@@ -122,6 +122,31 @@ public class ItemAccessor
         return items;
     }
 
+    /// <summary>
+    /// 商品を登録する
+    /// </summary>
+    /// <param name="item">登録データを保持するEntity</param>
+    /// <returns></returns>
+    public Item Create(Item item)
+    {
+        // 新規商品を追加する
+        var result = _context.Items.Add(item);
+        // 変更を永続化する
+        _context.SaveChanges();
+        return result.Entity;
+    }
+
+    /// <summary>
+    /// 複数の商品を登録する
+    /// </summary>
+    /// <param name="items">登録データを保持するEntityのリスト</param>
+    public void CreateRange(List<Item> items)
+    {
+        // 新規商品を追加する
+        _context.Items.AddRange(items);
+        // 変更を永続化する
+        _context.SaveChanges();
+    }   
 
     
 }
