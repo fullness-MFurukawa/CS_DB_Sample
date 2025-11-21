@@ -8,7 +8,6 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-21</date>
 /// <version>1.0.0</version>
-[Table("item")]
 public class Item
 {
     [Key]
@@ -27,7 +26,6 @@ public class Item
     /// 商品の属するカテゴリ
     /// 外部キー名をナビゲーションプロパティに付ける
     /// </summary>
-    [ForeignKey("CategoryId")]
     public ItemCategory? Category { get; set; }
 
     public override string? ToString()

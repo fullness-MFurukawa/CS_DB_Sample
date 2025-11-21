@@ -8,7 +8,6 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-21</date>
 /// <version>1.0.0</version>
-[Table("item_category")]
 public class ItemCategory 
 {
     [Key]

@@ -8,7 +8,7 @@ namespace CS_DB_Sample.Infrastructures;
 /// MYSQL8.0.43
 /// </summary>
 /// <author>Fullness,Inc.</author>
-/// <date>2025-11-15</date>
+/// <date>2025-11-21</date>
 /// <version>1.0.0</version>
 public class AppDbContext : DbContext
 {
@@ -63,7 +63,7 @@ public class AppDbContext : DbContext
     /// <summary>
     /// モデルの構成の定義
     /// このメソッドは、Entity Framework Core によってエンティティとテーブルの
-    ///  マッピング情報）が初期化されるタイミングで一度だけ呼び出さる
+    /// マッピング情報が初期化されるタイミングで一度だけ呼び出さる
     /// </summary>
     /// <param name="modelBuilder">
     /// モデルの構成を行うための <see cref="ModelBuilder"/> オブジェクト
@@ -71,10 +71,46 @@ public class AppDbContext : DbContext
     /// </param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // sales_detail エンティティのモデル構成を定義
+        // Itemエンティティのモデル構成を定義    
+        modelBuilder.Entity<Item>()
+            // itemテーブルにマッピング
+            .ToTable("item")       
+            // category_id列とプロパティをマッピング
+            .Property(i => i.CategoryId)
+            .HasColumnName("category_id");
+        // ItemCategoryエンティティのモデル構成を定義 
+        modelBuilder.Entity<ItemCategory>()
+            // item_categoryテーブルにマッピング
+            .ToTable("item_category");
+        // ItemCategory(1)とItem(多)のリレーションを定義
+        modelBuilder.Entity<Item>()
+            // 1側のプロパティ名
+            .HasOne(i => i.Category)
+            // 多側のプロパティ名
+            .WithMany(c => c.Items)
+            // itemテーブルの外部キー
+            .HasForeignKey(i => i.CategoryId);
+
+
+        // SalesDetailエンティティのモデル構成を定義
         // 複合主キー（id, sales_id）を指定する
         modelBuilder.Entity<SalesDetail>()
+            .ToTable("sales_detail") // sales_detailテーブルにマッピング
             //new { ... } の構文で、2つのプロパティをまとめて1つのキーとして指定
             .HasKey(sd => new { sd.Id, sd.SalesId });
+            // sales_id列とプロパティをマッピング
+            modelBuilder.Entity<SalesDetail>()
+            .Property(sd => sd.SalesId)
+            .HasColumnName("sales_id");
+        // item_id列とプロパティをマッピング
+        modelBuilder.Entity<SalesDetail>()
+            .Property(sd => sd.ItemId)
+            .HasColumnName("item_id");
+        // SalesDetail(1)とItem(1)のリレーションを定義
+        modelBuilder.Entity<SalesDetail>()
+            .HasOne(sd => sd.Item)
+            .WithMany() // Item → SalesDetail が不要なら空でOK
+            .HasForeignKey(sd => sd.ItemId);
     }
+
 }
