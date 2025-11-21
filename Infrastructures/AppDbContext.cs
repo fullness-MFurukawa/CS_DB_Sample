@@ -78,6 +78,7 @@ public class AppDbContext : DbContext
             // category_id列とプロパティをマッピング
             .Property(i => i.CategoryId)
             .HasColumnName("category_id");
+           
         // ItemCategoryエンティティのモデル構成を定義 
         modelBuilder.Entity<ItemCategory>()
             // item_categoryテーブルにマッピング
@@ -89,7 +90,9 @@ public class AppDbContext : DbContext
             // 多側のプロパティ名
             .WithMany(c => c.Items)
             // itemテーブルの外部キー
-            .HasForeignKey(i => i.CategoryId);
+            .HasForeignKey(i => i.CategoryId)
+            // 子が存在する限り、親を削除できない
+            .OnDelete(DeleteBehavior.Restrict);
 
 
         // SalesDetailエンティティのモデル構成を定義
