@@ -18,6 +18,14 @@ public class AppDbContext : DbContext
     /// </summary>
     public DbSet<Item> Items { get; set; } = null!;
     /// <summary>
+    /// item_categoryテーブルにマッピングされるDbSetプロパティ 
+    /// </summary>
+    public DbSet<ItemCategory> ItemCategories { get; set; } = null!;
+    /// <summary>
+    /// sales_detailテーブルにマッピングされるDbSetプロパティ 
+    /// </summary>
+    public DbSet<SalesDetail> SalesDetails { get; set; } = null!;
+    /// <summary>
     /// departmentテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
     public DbSet<Department> Departments{ get; set; } = null!;
@@ -65,7 +73,7 @@ public class AppDbContext : DbContext
     {
         // sales_detail エンティティのモデル構成を定義
         // 複合主キー（id, sales_id）を指定する
-        modelBuilder.Entity<SalesDetailEntity>()
+        modelBuilder.Entity<SalesDetail>()
             //new { ... } の構文で、2つのプロパティをまとめて1つのキーとして指定
             .HasKey(sd => new { sd.Id, sd.SalesId });
     }

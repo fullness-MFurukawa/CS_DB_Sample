@@ -6,7 +6,7 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 /// itemテーブルにマッピングされる
 /// </summary>
 /// <author>Fullness,Inc.</author>
-/// <date>2025-11-15</date>
+/// <date>2025-11-21</date>
 /// <version>1.0.0</version>
 [Table("item")]
 public class Item
@@ -15,8 +15,20 @@ public class Item
     public int Id         { get; set; } // 商品Id（主キー）
     public string? Name   { get; set; } // 商品名
     public int Price      { get; set; } // 単価
+
+    /// <summary>
+    /// カテゴリID（外部キー）
+    /// </summary>
     [Column("category_id")]          
     public int CategoryId { get; set; } // カテゴリId
+
+    /// <summary>
+    /// ナビゲーションプロパティ
+    /// 商品の属するカテゴリ
+    /// 外部キー名をナビゲーションプロパティに付ける
+    /// </summary>
+    [ForeignKey("CategoryId")]
+    public ItemCategory? Category { get; set; }
 
     public override string? ToString()
     {

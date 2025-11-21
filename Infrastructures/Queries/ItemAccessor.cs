@@ -1,12 +1,11 @@
 using CS_DB_Sample.Infrastructures.Entities;
 using Microsoft.EntityFrameworkCore;
-
 namespace CS_DB_Sample.Infrastructures.Queries;
 /// <summary>
 /// itemテーブルにアクセスするクラス
 /// </summary>
 /// <author>Fullness,Inc.</author>
-/// <date>2025-11-16</date>
+/// <date>2025-11-21</date>
 /// <version>1.0.0</version>
 public class ItemAccessor
 {
@@ -210,5 +209,19 @@ public class ItemAccessor
         _context.Items.RemoveRange(items);
         // 削除を永続化する
         _context.SaveChanges();
+    }
+
+    /// <summary>
+    /// 指定された商品Idの商品とカテゴリを取得する
+    /// </summary>
+    /// <param name="id">商品Id(主キー)</param>
+    /// <returns></returns>
+    public Item FindByIdJoinItemCategory(int id)
+    {
+        var item = _context.Items
+            .Where(i => i.Id == id)
+            .Include(i => i.Category) // カテゴリを結合して取得する
+            .Single();
+        return item;
     }
 }
