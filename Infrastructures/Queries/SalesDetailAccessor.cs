@@ -37,4 +37,17 @@ public class SalesDetailAccessor
             .ToList();
         return salesDetails;
     }
+
+    /// <summary>
+    /// 売上明細を登録する
+    /// </summary>
+    /// <param name="salesDetail">登録する売上明細</param>
+    /// <returns>登録結果</returns>
+    public SalesDetail Create(SalesDetail salesDetail)
+    {
+        var result = _context.SalesDetails.Add(salesDetail);
+        // 変更を保存する
+        _context.SaveChanges();
+        return result.Entity;
+    }
 }

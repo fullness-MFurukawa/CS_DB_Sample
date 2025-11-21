@@ -22,6 +22,10 @@ public class AppDbContext : DbContext
     /// </summary>
     public DbSet<ItemCategory> ItemCategories { get; set; } = null!;
     /// <summary>
+    /// salesテーブルにマッピングされるDbSetプロパティ 
+    /// </summary>
+    public DbSet<Sale> Sales { get; set; } = null!;
+    /// <summary>
     /// sales_detailテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
     public DbSet<SalesDetail> SalesDetails { get; set; } = null!;
@@ -94,26 +98,48 @@ public class AppDbContext : DbContext
             // 子が存在する限り、親を削除できない
             .OnDelete(DeleteBehavior.Restrict);
 
+        // Saleエンティティのモデル構成を定義
+        // ラムダ式の記述例
+        modelBuilder.Entity<Sale>(entity =>
+        {
+            // sales テーブルにマッピング
+            entity.ToTable("sales");
+            // 主キー
+            entity.HasKey(s => s.Id);
+            // 列マッピング
+            entity.Property(s => s.Id)
+                .HasColumnName("id");
+            entity.Property(s => s.SalesDate)
+                .HasColumnName("sales_date");
+            entity.Property(s => s.Total)
+                .HasColumnName("total");
+            entity.Property(s => s.AccountId)
+                .HasColumnName("account_id");
+        });
 
         // SalesDetailエンティティのモデル構成を定義
-        // 複合主キー（id, sales_id）を指定する
-        modelBuilder.Entity<SalesDetail>()
-            .ToTable("sales_detail") // sales_detailテーブルにマッピング
-            //new { ... } の構文で、2つのプロパティをまとめて1つのキーとして指定
-            .HasKey(sd => new { sd.Id, sd.SalesId });
-            // sales_id列とプロパティをマッピング
-            modelBuilder.Entity<SalesDetail>()
-            .Property(sd => sd.SalesId)
-            .HasColumnName("sales_id");
-        // item_id列とプロパティをマッピング
-        modelBuilder.Entity<SalesDetail>()
-            .Property(sd => sd.ItemId)
-            .HasColumnName("item_id");
-        // SalesDetail(1)とItem(1)のリレーションを定義
-        modelBuilder.Entity<SalesDetail>()
-            .HasOne(sd => sd.Item)
-            .WithMany() // Item → SalesDetail が不要なら空でOK
-            .HasForeignKey(sd => sd.ItemId);
-    }
+        // ラムダ式の記述例
+        modelBuilder.Entity<SalesDetail>(entity =>
+        {
+            entity.ToTable("sales_detail");
+            // 主キーは id のみ（AUTO_INCREMENT）
+            entity.HasKey(sd => sd.Id);
+            entity.Property(sd => sd.Id)
+                .HasColumnName("id")
+                .ValueGeneratedOnAdd(); // 明示的に自動採番を設定
 
+            entity.Property(sd => sd.SalesId)
+                .HasColumnName("sales_id");
+            entity.Property(sd => sd.ItemId)
+                .HasColumnName("item_id");
+            entity.Property(sd => sd.Quantity)
+                .HasColumnName("quantity");
+            entity.Property(sd => sd.Subtotal)
+                .HasColumnName("subtotal");
+            // リレーション設定
+            entity.HasOne(sd => sd.Item)
+                .WithMany()
+                .HasForeignKey(sd => sd.ItemId);
+        });
+    }
 }

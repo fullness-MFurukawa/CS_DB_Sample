@@ -1,23 +1,25 @@
-﻿using CS_DB_Sample.Infrastructures;
-using CS_DB_Sample.Infrastructures.Queries;
+﻿using CS_DB_Sample.Application;
+using CS_DB_Sample.Infrastructures;
 using CS_DB_Sample.Infrastructures.Entities;
 namespace CS_DB_Sample;
 class Program
 {
     static void Main(string[] args)
     {
-        var context = new AppDbContext();
-        var salesDetailAccessor = new SalesDetailAccessor(context);
-        // 指定された売上Idの売上、商品とそのカテゴリを取得する
-        var salesDetails = salesDetailAccessor
-            .FindBySalesIdJoinItemAndItemCategory(1);
-
-        foreach(var salesDetail in salesDetails)
+        using var context = new AppDbContext();
+        var registerSales = new RegiterSales(context);
+        // 登録する売上データ
+        var sale = new Sale
+        { SalesDate = DateTime.Now, Total = 240, AccountId = 1 };
+        // 登録する売上明細データ
+        var salesDetails = new List<SalesDetail>
         {
-            Console.WriteLine(salesDetail);
-            Console.WriteLine(salesDetail.Item);
-            Console.WriteLine(salesDetail.Item!.Category);
-
-        }
+            new SalesDetail
+            { Quantity = 1, Subtotal = 120, ItemId = 1 },
+            new SalesDetail
+            { Quantity = 1, Subtotal = 120, ItemId = 2 }
+        };
+        // 売上と売上明細を登録する
+        registerSales.Register(sale, salesDetails);
     }
 }
