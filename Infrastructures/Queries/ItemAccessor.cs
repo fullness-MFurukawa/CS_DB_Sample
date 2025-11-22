@@ -25,7 +25,7 @@ public class ItemAccessor
     /// </summary>
     /// <param name="price">単価</param>
     /// <returns></returns>
-    public List<Item> FindByPrice(int price)
+    public List<ItemEntity> FindByPrice(int price)
     {
         var items = _context.Items
         // 引数priceと同じ価格のすべて商品を取得する
@@ -40,12 +40,12 @@ public class ItemAccessor
     /// </summary>
     /// <param name="name">商品名</param>
     /// <returns></returns>
-    public Item FindByNameTypeA(string name)
+    public ItemEntity FindByNameTypeA(string name)
     {
         // 引数nameと同じ名前の商品を取得する
         var item = _context.Items
             .Where(i => i.Name == name)
-            .Select(i => new Item
+            .Select(i => new ItemEntity
             {
                 // 商品名と単価を取得する
                 Name = i.Name,
@@ -61,11 +61,11 @@ public class ItemAccessor
     /// </summary>
     /// <param name="name">商品名</param>
     /// <returns></returns>
-    public Item FindByNameTypeB(string name)
+    public ItemEntity FindByNameTypeB(string name)
     {
         // 引数nameと同じ名前の商品を取得する
         var item = _context.Items
-            .Select(i => new Item
+            .Select(i => new ItemEntity
             {
                 // 商品名と単価を取得する
                 Name = i.Name,
@@ -79,7 +79,7 @@ public class ItemAccessor
     /// <summary>
     /// 商品名に指定語句を「含む」商品を検索（中間一致）
     /// </summary>
-    public List<Item> FindByNameContains(string keyword)
+    public List<ItemEntity> FindByNameContains(string keyword)
     {
         return _context.Items
             .Where(i => i.Name!.Contains(keyword))
@@ -89,7 +89,7 @@ public class ItemAccessor
     /// <summary>
     /// 商品名が指定語句で「始まる」商品を検索（前方一致）
     /// </summary>
-    public List<Item> FindByNameStartsWith(string prefix)
+    public List<ItemEntity> FindByNameStartsWith(string prefix)
     {
         return _context.Items
             .Where(i => i.Name!.StartsWith(prefix))
@@ -99,7 +99,7 @@ public class ItemAccessor
     /// <summary>
     /// 商品名が指定語句で「終わる」商品を検索（後方一致）
     /// </summary>
-    public List<Item> FindByNameEndsWith(string suffix)
+    public List<ItemEntity> FindByNameEndsWith(string suffix)
     {
         return _context.Items
             .Where(i => i.Name!.EndsWith(suffix))
@@ -112,7 +112,7 @@ public class ItemAccessor
     /// </summary>
     /// <param name="price">単価</param>
     /// <returns></returns>
-    public List<Item> FindByPriceNoTracking(int price)
+    public List<ItemEntity> FindByPriceNoTracking(int price)
     {
         var items = _context.Items
             .Where(i => i.Price == price)
@@ -126,7 +126,7 @@ public class ItemAccessor
     /// </summary>
     /// <param name="item">登録データを保持するEntity</param>
     /// <returns></returns>
-    public Item Create(Item item)
+    public ItemEntity Create(ItemEntity item)
     {
         // 新規商品を追加する
         var result = _context.Items.Add(item);
@@ -139,7 +139,7 @@ public class ItemAccessor
     /// 複数の商品を登録する
     /// </summary>
     /// <param name="items">登録データを保持するEntityのリスト</param>
-    public void CreateRange(List<Item> items)
+    public void CreateRange(List<ItemEntity> items)
     {
         // 新規商品を追加する
         _context.Items.AddRange(items);
@@ -152,7 +152,7 @@ public class ItemAccessor
     /// </summary>
     /// <param name="id">変更対象の商品の主キー値</param>
     /// <returns></returns>
-    public Item? UpdateById(Item item)
+    public ItemEntity? UpdateById(ItemEntity item)
     {
         // 商品Idを指定して商品を取得する
         var result = _context.Items.Find(item.Id);
@@ -172,7 +172,7 @@ public class ItemAccessor
     /// 複数の商品を更新する
     /// </summary>
     /// <param name="items">変更対象の商品</param>
-    public void UpdateRange(List<Item> items)
+    public void UpdateRange(List<ItemEntity> items)
     {
         // 商品を更新する
         _context.Items.UpdateRange(items);
@@ -185,7 +185,7 @@ public class ItemAccessor
     /// </summary>
     /// <param name="item">削除対象の商品</param>
     /// <returns>削除したエンティティ</returns>
-    public Item? DeleteById(Item item)
+    public ItemEntity? DeleteById(ItemEntity item)
     {
         var result = _context.Items.Find(item.Id);
         if (result == null)
@@ -203,7 +203,7 @@ public class ItemAccessor
     /// 複数の商品を削除する
     /// </summary>
     /// <param name="items">削除対象の商品</param>
-    public void DeleteRange(List<Item> items)
+    public void DeleteRange(List<ItemEntity> items)
     {
         // 商品を削除する
         _context.Items.RemoveRange(items);
@@ -216,7 +216,7 @@ public class ItemAccessor
     /// </summary>
     /// <param name="id">商品Id(主キー)</param>
     /// <returns></returns>
-    public Item FindByIdJoinItemCategory(int id)
+    public ItemEntity FindByIdJoinItemCategory(int id)
     {
         var item = _context.Items
             .Where(i => i.Id == id)
@@ -229,7 +229,7 @@ public class ItemAccessor
     /// すべての商品を商品名で昇順に並び替えて取得する
     /// </summary>
     /// <returns></returns>
-    public List<Item> FindAllOrderByName()
+    public List<ItemEntity> FindAllOrderByName()
     {
         var items = _context.Items
             .OrderBy(i => i.Name)
@@ -241,7 +241,7 @@ public class ItemAccessor
     /// すべての商品を単価で降順に並び替ええて取得する
     /// </summary>
     /// <returns></returns>
-    public List<Item> FindAllOrderByDecPrice()
+    public List<ItemEntity> FindAllOrderByDecPrice()
     {
         var items = _context.Items
             .OrderByDescending(i => i.Price)
@@ -267,12 +267,12 @@ public class ItemAccessor
     /// <param name="keyword">商品検索キーワード</param>
     /// <param name="stock">一致させたい在庫数</param>
     /// <returns>条件に一致する商品の一覧</returns>
-    public List<Item> FindItemsByNameAndStockContains(string keyword,int stock)
+    public List<ItemEntity> FindItemsByNameAndStockContains(string keyword,int stock)
     {
         var items = _context.Items
             .Where(i =>
                 // 商品名がkeywordが含まれ、かつ指定在庫数の商品Idに一致する
-                i.Name.Contains(keyword) &&
+                i.Name!.Contains(keyword) &&
                 _context.ItemStocks
                     .Where(s => s.Stock == stock) // 条件に合う在庫
                     .Select(s => s.ItemId)        // 対象商品のIdを抽出

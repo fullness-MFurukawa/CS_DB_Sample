@@ -8,7 +8,7 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-21</date>
 /// <version>1.0.0</version>
-public class Item
+public class ItemEntity
 {
     [Key]
     public int Id         { get; set; } // 商品Id（主キー）

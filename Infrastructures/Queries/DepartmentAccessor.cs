@@ -1,5 +1,4 @@
 using CS_DB_Sample.Infrastructures.Entities;
-
 namespace CS_DB_Sample.Infrastructures.Queries;
 /// <summary>
 /// departmentテーブルにアクセスするクラス
@@ -24,7 +23,7 @@ public class DepartementAccessor
     /// <summary>
     /// すべての部署を取得する
     /// </summary>
-    public List<Department> FindAll()
+    public List<DepartmentEntity> FindAll()
     {
         // ToList()メソッドを使用して、すべての部署を取得する
         var departments = _context.Departments.ToList();
@@ -35,7 +34,7 @@ public class DepartementAccessor
     /// 指定した部署Idの部署を取得する
     /// </summary>
     /// <param name="departmentId">部署Id(主キー)</param>
-    public Department? FindById(int departmentId)
+    public DepartmentEntity? FindById(int departmentId)
     {
         // Find()メソッドを使用して、指定した部署Idの部署を取得する
         var department = _context.Departments.Find(departmentId);

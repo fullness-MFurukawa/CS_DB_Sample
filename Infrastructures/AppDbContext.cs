@@ -12,11 +12,10 @@ namespace CS_DB_Sample.Infrastructures;
 /// <version>1.0.0</version>
 public class AppDbContext : DbContext
 {
-
     /// <summary>
     /// itemテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
-    public DbSet<Item> Items { get; set; } = null!;
+    public DbSet<ItemEntity> Items { get; set; } = null!;
     /// <summary>
     /// item_categoryテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
@@ -36,7 +35,7 @@ public class AppDbContext : DbContext
     /// <summary>
     /// departmentテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
-    public DbSet<Department> Departments{ get; set; } = null!;
+    public DbSet<DepartmentEntity> Departments{ get; set; } = null!;
 
 
     /// <summary>
@@ -80,7 +79,7 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // Itemエンティティのモデル構成を定義    
-        modelBuilder.Entity<Item>()
+        modelBuilder.Entity<ItemEntity>()
             // itemテーブルにマッピング
             .ToTable("item")       
             // category_id列とプロパティをマッピング
@@ -92,7 +91,7 @@ public class AppDbContext : DbContext
             // item_categoryテーブルにマッピング
             .ToTable("item_category");
         // ItemCategory(1)とItem(多)のリレーションを定義
-        modelBuilder.Entity<Item>()
+        modelBuilder.Entity<ItemEntity>()
             // 1側のプロパティ名
             .HasOne(i => i.Category)
             // 多側のプロパティ名
