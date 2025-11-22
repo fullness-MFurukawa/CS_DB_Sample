@@ -1,25 +1,16 @@
-﻿using CS_DB_Sample.Application;
-using CS_DB_Sample.Infrastructures;
-using CS_DB_Sample.Infrastructures.Entities;
+﻿using CS_DB_Sample.Infrastructures;
+using CS_DB_Sample.Infrastructures.Queries;
 namespace CS_DB_Sample;
 class Program
 {
     static void Main(string[] args)
     {
         using var context = new AppDbContext();
-        var registerSales = new RegiterSales(context);
-        // 登録する売上データ
-        var sale = new Sale
-        { SalesDate = DateTime.Now, Total = 240, AccountId = 1 };
-        // 登録する売上明細データ
-        var salesDetails = new List<SalesDetail>
-        {
-            new SalesDetail
-            { Quantity = 1, Subtotal = 120, ItemId = 1 },
-            new SalesDetail
-            { Quantity = 1, Subtotal = 120, ItemId = 2 }
-        };
-        // 売上と売上明細を登録する
-        registerSales.Register(sale, salesDetails);
+        var accessor = new ItemAccessor(context);
+
+        var average = accessor.GetAveragePriceByCategoryId(1);
+        Console.WriteLine($"平均単価: {average}");
+        var sum = accessor.GetTotalPriceByCategoryId(1);
+        Console.WriteLine($"合計単価: {sum}");
     }
 }

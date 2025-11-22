@@ -22,6 +22,10 @@ public class AppDbContext : DbContext
     /// </summary>
     public DbSet<ItemCategory> ItemCategories { get; set; } = null!;
     /// <summary>
+    /// item_stockテーブルにマッピングされるDbSetプロパティ 
+    /// </summary>
+    public DbSet<ItemStock> ItemStocks { get; set; } = null!;
+    /// <summary>
     /// salesテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
     public DbSet<Sale> Sales { get; set; } = null!;

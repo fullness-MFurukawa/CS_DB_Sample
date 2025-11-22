@@ -224,4 +224,90 @@ public class ItemAccessor
             .Single();
         return item;
     }
+
+    /// <summary>
+    /// すべての商品を商品名で昇順に並び替えて取得する
+    /// </summary>
+    /// <returns></returns>
+    public List<Item> FindAllOrderByName()
+    {
+        var items = _context.Items
+            .OrderBy(i => i.Name)
+            .ToList();
+        return items;
+    }
+
+    /// <summary>
+    /// すべての商品を単価で降順に並び替ええて取得する
+    /// </summary>
+    /// <returns></returns>
+    public List<Item> FindAllOrderByDecPrice()
+    {
+        var items = _context.Items
+            .OrderByDescending(i => i.Price)
+            .ToList();
+        return items;
+    }
+
+    /// <summary>
+    /// 指定された在庫数を持つ商品が存在するかを判定する
+    /// </summary>
+    /// <param name="stockThreshold">判定対象とする在庫数の下限値</param>
+    /// <returns>在庫数が条件以上の商品の存在有無(true/false)</returns>
+    public bool ExistsItemWithStock(int stock)
+    {
+        return _context.Items
+            .Any(i => _context.ItemStocks
+                .Any(s => s.ItemId == i.Id && s.Stock >= stock));
+    }
+
+    /// <summary>
+    /// 商品名に引数keywordが含まれ、指定された在庫数を持つ商品を取得する
+    /// </summary>
+    /// <param name="keyword">商品検索キーワード</param>
+    /// <param name="stock">一致させたい在庫数</param>
+    /// <returns>条件に一致する商品の一覧</returns>
+    public List<Item> FindItemsByNameAndStockContains(string keyword,int stock)
+    {
+        var items = _context.Items
+            .Where(i =>
+                // 商品名がkeywordが含まれ、かつ指定在庫数の商品Idに一致する
+                i.Name.Contains(keyword) &&
+                _context.ItemStocks
+                    .Where(s => s.Stock == stock) // 条件に合う在庫
+                    .Select(s => s.ItemId)        // 対象商品のIdを抽出
+                    .Contains(i.Id)               // 商品Idが一致するか
+            )
+            .ToList();  // クエリ実行（SQLに変換される）
+
+        return items;
+    }
+
+    /// <summary>
+    /// 指定されたカテゴリIdの商品の平均単価を取得する(小数部切り捨て)
+    /// </summary>
+    /// <param name="categoryId">カテゴリId</param>
+    /// <returns>平均単価</returns>
+    public int GetAveragePriceByCategoryId(int categoryId)
+    {
+        var average = _context.Items
+            .Where(i => i.CategoryId == categoryId)
+            .Select(i => i.Price) // 商品の単価を取得する
+            .Average(); // 単価の平均を取得する
+        return (int)Math.Floor(average);
+    }
+
+    /// <summary>
+    /// 指定されたカテゴリIdの商品の合計単価を取得する
+    /// </summary>
+    /// <param name="categoryId">カテゴリId</param>
+    /// <returns>合計金額</returns>
+    public int GetTotalPriceByCategoryId(int categoryId)
+    {
+        var sum = _context.Items
+            .Where(i => i.CategoryId == categoryId)
+            .Select(i => i.Price) // 商品の単価を取得する
+            .Sum(); // 単価の合計を取得する
+        return sum;
+    }
 }

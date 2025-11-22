@@ -50,4 +50,22 @@ public class SalesDetailAccessor
         _context.SaveChanges();
         return result.Entity;
     }
+
+    /// <summary>
+    /// 商品Idでグループ化して、売上数量と小計金額を集計する
+    /// </summary>
+    /// <returns></returns>
+    public List<ItemSalesSummary> FindAllGroupByItemId()
+    {
+        var groupedDetails = _context.SalesDetails
+            .GroupBy(sd => sd.ItemId)
+            .Select(g => new ItemSalesSummary
+            {
+                ItemId = g.Key,
+                TotalQuantity = g.Sum(sd => sd.Quantity),
+                TotalSubtotal = g.Sum(sd => sd.Subtotal)
+            })
+            .ToList();
+        return groupedDetails;
+    }
 }
