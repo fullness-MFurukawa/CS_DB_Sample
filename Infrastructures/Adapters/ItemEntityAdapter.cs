@@ -1,21 +1,21 @@
 using CS_DB_Sample.Domains.Adapters;
 using CS_DB_Sample.Domains.Models;
 using CS_DB_Sample.Infrastructures.Entities;
-namespace CS_DB_Sample.Infrastructures.AdapterImpl;
+namespace CS_DB_Sample.Infrastructures.Adapters;
 /// <summary>
 /// ItemEntityとドメインオブジェクトItemの変換を行うアダプター
 /// </summary>
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-23</date>
 /// <version>1.0.0</version>
-public class ItemAdapterImpl : IItemAdapter<ItemEntity>
+public class ItemEntityAdapter : IItemAdapter<ItemEntity>
 {
     // ItemCategoryEntityとドメインオブジェクトItemCategoryの変換を行うアダプター
     private readonly IItemCategoryAdapter<ItemCategoryEntity> _categoryAdapter;
     /// <summary>
     /// コンストラクタ(カテゴリアダプターの注入)
     /// </summary>
-    public ItemAdapterImpl(IItemCategoryAdapter<ItemCategoryEntity> categoryAdapter)
+    public ItemEntityAdapter(IItemCategoryAdapter<ItemCategoryEntity> categoryAdapter)
     {
         _categoryAdapter = categoryAdapter;
     }

@@ -1,14 +1,14 @@
 using CS_DB_Sample.Domains.Adapters;
 using CS_DB_Sample.Domains.Models;
 using CS_DB_Sample.Infrastructures.Entities;
-namespace CS_DB_Sample.Infrastructures.AdapterImpl;
+namespace CS_DB_Sample.Infrastructures.Adapters;
 /// <summary>
 /// ItemCategoryEntityとドメインオブジェクトItemCategoryの変換を行うアダプター
 /// </summary>
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-23</date>
 /// <version>1.0.0</version>
-public class ItemCategoryAdapterImpl : IItemCategoryAdapter<ItemCategoryEntity>
+public class ItemCategoryEntityAdapter : IItemCategoryAdapter<ItemCategoryEntity>
 {
     // ItemEntityとドメインオブジェクトItemの変換を行うアダプター
     private readonly IItemAdapter<ItemEntity> _itemAdapter;
@@ -16,7 +16,7 @@ public class ItemCategoryAdapterImpl : IItemCategoryAdapter<ItemCategoryEntity>
     /// コンストラクタ(商品アダプターの注入)
     /// </summary>
     /// <param name="itemAdapter"></param>
-    public ItemCategoryAdapterImpl(IItemAdapter<ItemEntity> itemAdapter)
+    public ItemCategoryEntityAdapter(IItemAdapter<ItemEntity> itemAdapter)
     {
         _itemAdapter = itemAdapter;
     }
