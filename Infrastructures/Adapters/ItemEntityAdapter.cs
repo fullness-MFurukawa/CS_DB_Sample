@@ -10,16 +10,6 @@ namespace CS_DB_Sample.Infrastructures.Adapters;
 /// <version>1.0.0</version>
 public class ItemEntityAdapter : IItemAdapter<ItemEntity>
 {
-    // ItemCategoryEntityとドメインオブジェクトItemCategoryの変換を行うアダプター
-    private readonly IItemCategoryAdapter<ItemCategoryEntity> _categoryAdapter;
-    /// <summary>
-    /// コンストラクタ(カテゴリアダプターの注入)
-    /// </summary>
-    public ItemEntityAdapter(IItemCategoryAdapter<ItemCategoryEntity> categoryAdapter)
-    {
-        _categoryAdapter = categoryAdapter;
-    }
-
     /// <summary>
     /// ItemEntityからドメインオブジェクトItemを復元する
     /// </summary>
@@ -29,14 +19,14 @@ public class ItemEntityAdapter : IItemAdapter<ItemEntity>
     {
         if (source == null)
             throw new ArgumentNullException("引数がnullのため復元できません。");
-        ItemCategory? itemCatgeory = null;
+        ItemCategory? itemCategory = null;
         if (source.Category != null)
         {
-            // カテゴリが存在したら、ItemCategoryEntityをItemCategoryに変換する
-            itemCatgeory = _categoryAdapter.ToDomain(source.Category);
+            itemCategory = new ItemCategory(
+                source.Category.Id, source.Category.Name!);
         }
         // ドメインオブジェクトItemを生成して返す
-        return new Domains.Models.Item(source.Id, source.Name!, source.Price, itemCatgeory);
+        return new Domains.Models.Item(source.Id, source.Name!, source.Price, itemCategory);
     }
 
     /// <summary>

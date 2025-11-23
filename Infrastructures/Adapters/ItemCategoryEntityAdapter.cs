@@ -10,17 +10,6 @@ namespace CS_DB_Sample.Infrastructures.Adapters;
 /// <version>1.0.0</version>
 public class ItemCategoryEntityAdapter : IItemCategoryAdapter<ItemCategoryEntity>
 {
-    // ItemEntityとドメインオブジェクトItemの変換を行うアダプター
-    private readonly IItemAdapter<ItemEntity> _itemAdapter;
-    /// <summary>
-    /// コンストラクタ(商品アダプターの注入)
-    /// </summary>
-    /// <param name="itemAdapter"></param>
-    public ItemCategoryEntityAdapter(IItemAdapter<ItemEntity> itemAdapter)
-    {
-        _itemAdapter = itemAdapter;
-    }
-
     /// <summary>
     /// ItemCategoryEntityからドメインオブジェクトItemCategoryを復元する
     /// </summary>
@@ -34,8 +23,16 @@ public class ItemCategoryEntityAdapter : IItemCategoryAdapter<ItemCategoryEntity
         // カテゴリに属する商品がある場合
         if (source.Items != null)
         {
-            // ItemEntityをItemに変換して、ItemCategoryのItemsプロパティに設定する
-            var items = _itemAdapter.ToDomainList(source.Items);
+            var items = new List<Item>();
+            foreach (var item in source.Items)
+            {
+                items.Add(new Item(
+                    item.Id,
+                    item.Name!,
+                    item.Price,
+                    null 
+                ));
+            }
             itemCategory.ChangeItems(items);
         }
         return itemCategory; // 生成したItemCategoryを返す
