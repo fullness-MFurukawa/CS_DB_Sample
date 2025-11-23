@@ -19,19 +19,19 @@ public class AppDbContext : DbContext
     /// <summary>
     /// item_categoryテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
-    public DbSet<ItemCategory> ItemCategories { get; set; } = null!;
+    public DbSet<ItemCategoryEntity> ItemCategories { get; set; } = null!;
     /// <summary>
     /// item_stockテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
-    public DbSet<ItemStock> ItemStocks { get; set; } = null!;
+    public DbSet<ItemStockEntity> ItemStocks { get; set; } = null!;
     /// <summary>
     /// salesテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
-    public DbSet<Sale> Sales { get; set; } = null!;
+    public DbSet<SalesEntity> Sales { get; set; } = null!;
     /// <summary>
     /// sales_detailテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
-    public DbSet<SalesDetail> SalesDetails { get; set; } = null!;
+    public DbSet<SalesDetailEntity> SalesDetails { get; set; } = null!;
     /// <summary>
     /// departmentテーブルにマッピングされるDbSetプロパティ 
     /// </summary>
@@ -78,7 +78,7 @@ public class AppDbContext : DbContext
     /// </param>
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        // Itemエンティティのモデル構成を定義    
+        // ItemEntityのモデル構成を定義    
         modelBuilder.Entity<ItemEntity>()
             // itemテーブルにマッピング
             .ToTable("item")       
@@ -86,8 +86,8 @@ public class AppDbContext : DbContext
             .Property(i => i.CategoryId)
             .HasColumnName("category_id");
            
-        // ItemCategoryエンティティのモデル構成を定義 
-        modelBuilder.Entity<ItemCategory>()
+        // ItemCategoryEntityのモデル構成を定義 
+        modelBuilder.Entity<ItemCategoryEntity>()
             // item_categoryテーブルにマッピング
             .ToTable("item_category");
         // ItemCategory(1)とItem(多)のリレーションを定義
@@ -101,9 +101,9 @@ public class AppDbContext : DbContext
             // 子が存在する限り、親を削除できない
             .OnDelete(DeleteBehavior.Restrict);
 
-        // Saleエンティティのモデル構成を定義
+        // SaleEntityのモデル構成を定義
         // ラムダ式の記述例
-        modelBuilder.Entity<Sale>(entity =>
+        modelBuilder.Entity<SalesEntity>(entity =>
         {
             // sales テーブルにマッピング
             entity.ToTable("sales");
@@ -120,12 +120,11 @@ public class AppDbContext : DbContext
                 .HasColumnName("account_id");
         });
 
-        // SalesDetailエンティティのモデル構成を定義
+        // SalesDetailEntityのモデル構成を定義
         // ラムダ式の記述例
-        modelBuilder.Entity<SalesDetail>(entity =>
+        modelBuilder.Entity<SalesDetailEntity>(entity =>
         {
             entity.ToTable("sales_detail");
-            // 主キーは id のみ（AUTO_INCREMENT）
             entity.HasKey(sd => sd.Id);
             entity.Property(sd => sd.Id)
                 .HasColumnName("id")

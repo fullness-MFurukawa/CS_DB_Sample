@@ -26,7 +26,7 @@ public class SalesDetailAccessor
     /// </summary>
     /// <param name="salesId">売上Id(主キー)</param>
     /// <returns></returns>
-    public List<SalesDetail> FindBySalesIdJoinItemAndItemCategory(int salesId)
+    public List<SalesDetailEntity> FindBySalesIdJoinItemAndItemCategory(int salesId)
     {
         var salesDetails = _context.SalesDetails
             .Where(s => s.SalesId == salesId)
@@ -43,7 +43,7 @@ public class SalesDetailAccessor
     /// </summary>
     /// <param name="salesDetail">登録する売上明細</param>
     /// <returns>登録結果</returns>
-    public SalesDetail Create(SalesDetail salesDetail)
+    public SalesDetailEntity Create(SalesDetailEntity salesDetail)
     {
         var result = _context.SalesDetails.Add(salesDetail);
         // 変更を保存する

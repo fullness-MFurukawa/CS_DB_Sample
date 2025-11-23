@@ -1,4 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
+// using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 namespace CS_DB_Sample.Infrastructures.Entities;
 /// <summary>
@@ -8,9 +8,10 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-21</date>
 /// <version>1.0.0</version>
+//[Table("item")]
 public class ItemEntity
 {
-    [Key]
+    //[Key]
     public int Id         { get; set; } // 商品Id（主キー）
     public string? Name   { get; set; } // 商品名
     public int Price      { get; set; } // 単価
@@ -18,7 +19,7 @@ public class ItemEntity
     /// <summary>
     /// カテゴリID（外部キー）
     /// </summary>
-    [Column("category_id")]          
+   //[Column("category_id")]          
     public int CategoryId { get; set; } // カテゴリId
 
     /// <summary>
@@ -26,7 +27,8 @@ public class ItemEntity
     /// 商品の属するカテゴリ
     /// 外部キー名をナビゲーションプロパティに付ける
     /// </summary>
-    public ItemCategory? Category { get; set; }
+    //[ForeignKey("CategoryId")]
+    public ItemCategoryEntity? Category { get; set; }
 
     public override string? ToString()
     {

@@ -23,7 +23,7 @@ public class SalesAccessor
     /// </summary>
     /// <param name="sales">登録する売上</param>
     /// <returns>登録結果</returns>
-    public Sale Create(Sale sale)
+    public SalesEntity Create(SalesEntity sale)
     {
         var result = _context.Sales.Add(sale);
         // 変更を保存する

@@ -33,7 +33,7 @@ public class RegiterSales
     /// </summary>
     /// <param name="sale">売上</param>
     /// <param name="salesDetails">売上明細</param>
-    public void Register(Sale sale, List<SalesDetail> salesDetails)
+    public void Register(SalesEntity sales, List<SalesDetailEntity> salesDetails)
     {
         // トランザクションを開始する
         // usingステートメントを使うことで、トランザクションが自動的に破棄される
@@ -41,7 +41,7 @@ public class RegiterSales
         try
         {
             // 売上を登録する
-            var salesResult = _salesAccessor.Create(sale);
+            var salesResult = _salesAccessor.Create(sales);
             Console.WriteLine("売上の登録に成功しました。");
             Console.WriteLine(salesResult);
             // 売上明細を登録する

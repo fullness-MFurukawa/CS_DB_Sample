@@ -5,7 +5,7 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-21</date>
 /// <version>1.0.0</version
-public class Sale
+public class SalesEntity
 {
     public int Id { get; set; }             // 売上Id（主キー）
     public DateTime SalesDate { get; set; } // 売上日

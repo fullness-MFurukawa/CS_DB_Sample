@@ -25,7 +25,7 @@ public class ItemCategoryAccessor
     /// </summary>
     /// <param name="id">カテゴリId(主キー)</param>
     /// <returns></returns>
-    public ItemCategory FindByIdJoinItems(int id)
+    public ItemCategoryEntity FindByIdJoinItems(int id)
     {
         var itemCategory = _context.ItemCategories
             .Where(i => i.Id == id)

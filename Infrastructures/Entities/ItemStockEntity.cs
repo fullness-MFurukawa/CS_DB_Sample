@@ -9,7 +9,7 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 /// <date>2025-11-22</date>
 /// <version>1.0.0</version>
 [Table("item_stock")]
-public class ItemStock
+public class ItemStockEntity
 {
     [Key]
     public int Id         { get; set; } // 商品在庫Id（主キー）
