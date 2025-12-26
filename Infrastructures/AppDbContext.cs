@@ -5,7 +5,7 @@ namespace CS_DB_Sample.Infrastructures;
 /// <summary>
 /// DbContext継承クラス
 /// WSL(Ubutu24.0.4)
-/// MYSQL8.0.43
+/// PostgreSQL17
 /// </summary>
 /// <author>Fullness,Inc.</author>
 /// <date>2025-11-21</date>
@@ -50,13 +50,12 @@ public class AppDbContext : DbContext
     {
         // 接続文字列（サーバー名、DB名、ユーザー名、パスワード）
         string connectionString =
-        "Server=localhost;Database=cs_db_exercise;User=root;Password=root;";
+            "Host=172.17.162.24;Database=cs_db_exercise;Username=appuser;Password=passw0rd;";
 
         optionsBuilder
-        // MySQLデータベースに接続する設定
+        // PostgreSQLデータベースに接続する設定
         // - connectionString：接続文字列（サーバー名、DB名、ユーザー名、パスワード）
-        // - MySqlServerVersion：利用するMySQLのバージョンを指定（8.0.43）
-        .UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 43)))
+        .UseNpgsql(connectionString)
         // 実行されたSQLをコンソールに表示する
         // - SQL文が目に見えるので「どんなSQLが発行されているか」が分かる
         // - デバッグや学習に非常に便利
