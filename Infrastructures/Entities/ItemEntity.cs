@@ -1,5 +1,5 @@
-// using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 namespace CS_DB_Sample.Infrastructures.Entities;
 /// <summary>
 ///  Data Annotations(データ注釈)によるマッピングするEntityクラス
@@ -11,15 +11,18 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 //[Table("item")]
 public class ItemEntity
 {
-    //[Key]
+//    [Key]
+//    [Column("id")]
     public int Id         { get; set; } // 商品Id（主キー）
+//    [Column("name")]
     public string? Name   { get; set; } // 商品名
+//    [Column("price")]
     public int Price      { get; set; } // 単価
 
     /// <summary>
     /// カテゴリID（外部キー）
     /// </summary>
-   //[Column("category_id")]          
+//    [Column("category_id")]          
     public int CategoryId { get; set; } // カテゴリId
 
     /// <summary>
@@ -27,7 +30,7 @@ public class ItemEntity
     /// 商品の属するカテゴリ
     /// 外部キー名をナビゲーションプロパティに付ける
     /// </summary>
-    //[ForeignKey("CategoryId")]
+  //  [ForeignKey("CategoryId")]
     public ItemCategoryEntity? Category { get; set; }
 
     public override string? ToString()

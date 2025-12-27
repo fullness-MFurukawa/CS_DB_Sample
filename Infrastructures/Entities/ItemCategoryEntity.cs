@@ -1,5 +1,5 @@
-// using System.ComponentModel.DataAnnotations.Schema;
-// using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 namespace CS_DB_Sample.Infrastructures.Entities;
 /// <summary>
 /// item_categoryテーブルにマッピングされるEntityクラス
@@ -10,8 +10,10 @@ namespace CS_DB_Sample.Infrastructures.Entities;
 //[Table("item_category")]
 public class ItemCategoryEntity 
 {
-    //[Key]
+//    [Key]
+//    [Column("id")]
     public int Id { get; set; }         //カテゴリId（主キー）
+ //   [Column("name")]
     public string? Name { get; set; }   // カテゴリ名
 
     /// <summary>

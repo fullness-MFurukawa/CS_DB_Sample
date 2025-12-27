@@ -50,7 +50,7 @@ public class AppDbContext : DbContext
     {
         // 接続文字列（サーバー名、DB名、ユーザー名、パスワード）
         string connectionString =
-            "Host=172.17.162.24;Database=cs_db_exercise;Username=appuser;Password=passw0rd;";
+            "Host=localhost;Database=cs_db_exercise;Username=postgres;Password=training;";
 
         optionsBuilder
         // PostgreSQLデータベースに接続する設定
@@ -79,16 +79,28 @@ public class AppDbContext : DbContext
     {
         // ItemEntityのモデル構成を定義    
         modelBuilder.Entity<ItemEntity>()
-            // itemテーブルにマッピング
-            .ToTable("item")       
-            // category_id列とプロパティをマッピング
-            .Property(i => i.CategoryId)
-            .HasColumnName("category_id");
+            .ToTable("item")    // itemテーブルにマッピング    
+            .HasKey(i => i.Id); // 主キー項目の定義
+        // テーブルの列とプロパティのマッピング
+        modelBuilder.Entity<ItemEntity>()
+            .Property(i => i.Id).HasColumnName("id");
+        modelBuilder.Entity<ItemEntity>()
+            .Property(i => i.Name).HasColumnName("name");
+        modelBuilder.Entity<ItemEntity>()
+            .Property(i => i.Price).HasColumnName("price");
+        modelBuilder.Entity<ItemEntity>()
+            .Property(i => i.CategoryId).HasColumnName("category_id");
            
         // ItemCategoryEntityのモデル構成を定義 
         modelBuilder.Entity<ItemCategoryEntity>()
             // item_categoryテーブルにマッピング
-            .ToTable("item_category");
+            .ToTable("item_category")
+            .HasKey(i => i.Id); // 主キー項目の定義
+        // テーブルの列とプロパティのマッピング
+        modelBuilder.Entity<ItemCategoryEntity>()
+            .Property(c => c.Id).HasColumnName("id");
+        modelBuilder.Entity<ItemCategoryEntity>()
+            .Property(c => c.Name).HasColumnName("name");
         // ItemCategory(1)とItem(多)のリレーションを定義
         modelBuilder.Entity<ItemEntity>()
             // 1側のプロパティ名
@@ -127,8 +139,7 @@ public class AppDbContext : DbContext
             entity.HasKey(sd => sd.Id);
             entity.Property(sd => sd.Id)
                 .HasColumnName("id")
-                .ValueGeneratedOnAdd(); // 明示的に自動採番を設定
-
+                .ValueGeneratedOnAdd();
             entity.Property(sd => sd.SalesId)
                 .HasColumnName("sales_id");
             entity.Property(sd => sd.ItemId)

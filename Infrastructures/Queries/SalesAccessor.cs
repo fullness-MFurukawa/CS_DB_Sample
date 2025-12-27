@@ -1,4 +1,5 @@
 using CS_DB_Sample.Infrastructures.Entities;
+using Microsoft.EntityFrameworkCore;
 namespace CS_DB_Sample.Infrastructures.Queries;
 /// <summary>
 /// salesテーブルにアクセスするクラス    

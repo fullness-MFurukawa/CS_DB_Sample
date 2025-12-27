@@ -1,20 +1,25 @@
-﻿using CS_DB_Sample.Domains.Repositories;
-using CS_DB_Sample.Extensions;
-using Microsoft.Extensions.DependencyInjection;
+﻿using CS_DB_Sample.Application;
+using CS_DB_Sample.Infrastructures;
+using CS_DB_Sample.Infrastructures.Entities;
 namespace CS_DB_Sample;
 class Program
 {
     static void Main(string[] args)
     {
-        // DIコンテナを生成し、IServiceProviderを返す
-        var provider = ServiceProviderBuilder.Build();
-        // IItemRepositoryインターフェイス実装を取得する
-        var repository = provider!.GetService<IItemRepository>();
-
-        var items = repository!.FindAll();
-        foreach (var item in items)
+        using var context = new AppDbContext();
+        var registerSales = new RegiterSales(context);
+        // 登録する売上データ
+        var sale = new SalesEntity
+        { SalesDate = DateTime.UtcNow, Total = 240, AccountId = 1 };
+        // 登録する売上明細データ
+        var salesDetails = new List<SalesDetailEntity>
         {
-            Console.WriteLine($"商品Id:{item.Id}, 商品名:{item.Name}, 価格:{item.Price}");
-        }
+            new SalesDetailEntity
+                { Quantity = 1, Subtotal = 120, ItemId = 1 },
+            new SalesDetailEntity
+                { Quantity = 1, Subtotal = 120, ItemId = 2 }
+        };
+        // 売上と売上明細を登録する
+        registerSales.Register(sale, salesDetails);
     }
 }
